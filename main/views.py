@@ -1,12 +1,10 @@
-from django.shortcuts import render
-
-from rest_framework.decorators import api_view
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserProfileSerializer
 from django.contrib.auth import authenticate
+from main.models import UserProfile
 
 
 class UserCreateView(generics.CreateAPIView):
@@ -29,3 +27,12 @@ class LoginView(APIView):
             data = {'error': 'Wrong Credentials'}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
+
+class EditProfileView(APIView):
+
+    def post(self, request):
+        instance = UserProfile.objects.get(user=request.user)
+        data = UserProfileSerializer(instance=instance, data=request.data)
+        if data.is_valid():
+            data.save()
+            return Response(data.data)

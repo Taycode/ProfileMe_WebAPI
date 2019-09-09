@@ -1,6 +1,5 @@
 from django.contrib import admin
-from rest_framework.authtoken.models import Token
+from main.models import UserProfile
 
 
-admin.site.register(Token)
-
+admin.site.register(UserProfile)

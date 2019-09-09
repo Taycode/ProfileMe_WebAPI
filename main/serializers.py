@@ -2,6 +2,8 @@ from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
+from main.models import UserProfile
+
 
 class UserSerializer(ModelSerializer):
 
@@ -23,3 +25,8 @@ class UserSerializer(ModelSerializer):
         return user
 
 
+class UserProfileSerializer(ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        exclude = ('user',)
