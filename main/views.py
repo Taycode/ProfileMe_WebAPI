@@ -29,7 +29,7 @@ class LoginView(APIView):
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProfileView(APIView):
+class ProfileLinksView(APIView):
 
     def get(self, request):
         profile = UserProfile.objects.get(user=request.user)
@@ -46,6 +46,17 @@ class ProfileView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ProfileView(APIView):
 
+    def put(self, request):
+        serializer = UserEditSerializer(request.user, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request):
+        serializer = UserEditSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
