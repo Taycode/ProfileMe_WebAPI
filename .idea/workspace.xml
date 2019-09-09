@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b8ad6b05-abf2-4c27-94bf-7171a5497811" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -108,7 +107,7 @@
       <workItem from="1567498281434" duration="1852000" />
       <workItem from="1567887078983" duration="8247000" />
       <workItem from="1567965478959" duration="10373000" />
-      <workItem from="1568034137312" duration="3416000" />
+      <workItem from="1568034137312" duration="3712000" />
     </task>
     <servers />
   </component>
