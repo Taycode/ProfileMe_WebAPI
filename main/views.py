@@ -56,6 +56,7 @@ class LoginView(APIView):
 
 
 class ProfileLinksView(APIView):
+    serializer_class = UserProfileSerializer
 
     def get(self, request):
         profile = UserProfile.objects.get(user=request.user)
@@ -73,6 +74,8 @@ class ProfileLinksView(APIView):
 
 
 class ProfileView(APIView):
+
+    serializer_class = UserEditSerializer
 
     def put(self, request):
         serializer = UserEditSerializer(request.user, request.data)
