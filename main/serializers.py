@@ -5,7 +5,15 @@ from rest_framework.authtoken.models import Token
 from main.models import UserProfile
 
 
-class UserSerializer(ModelSerializer):
+class UserLoginSerializer(ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['email', 'password']
+        extra_kwargs = {'password':{'write_only': True}}
+
+
+class UserCreateSerializer(ModelSerializer):
 
     class Meta:
         model = User

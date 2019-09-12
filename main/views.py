@@ -2,19 +2,18 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, UserProfileSerializer, UserEditSerializer
+from .serializers import UserCreateSerializer, UserProfileSerializer, UserEditSerializer, UserLoginSerializer
 from django.contrib.auth import authenticate
 from main.models import UserProfile
 from django.contrib.auth.models import User
-from rest_framework.mixins import CreateModelMixin
 
 
-class UserRegisterView(CreateModelMixin, APIView):
+class UserRegisterView(APIView):
     permission_classes = ()
-    serializer_class = UserSerializer
+    serializer_class = UserCreateSerializer
 
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
             if User.objects.filter(email=serializer.data['email']):
                 data = {
@@ -26,20 +25,31 @@ class UserRegisterView(CreateModelMixin, APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         else:
-
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(APIView):
     permission_classes = ()
+    serializer_class = UserLoginSerializer
 
     def post(self, request):
-        username = request.data.get('username')
+        email = request.data.get('email')
         password = request.data.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            data = {'Token': user.auth_token.key}
-            return Response(data, status=status.HTTP_200_OK)
+        user_instance = User.objects.filter(email__iexact=email)
+
+        if user_instance:
+            user_instance = User.objects.get(email__iexact=email)
+            user = authenticate(username=user_instance.username, password=password)
+
+            if user is not None:
+
+                data = {'Token': user.auth_token.key}
+                return Response(data, status=status.HTTP_200_OK)
+
+            else:
+                data = {'error': 'Wrong Credentials'}
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
         else:
             data = {'error': 'Wrong Credentials'}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
