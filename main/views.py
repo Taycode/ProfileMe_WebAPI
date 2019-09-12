@@ -15,7 +15,7 @@ class UserRegisterView(APIView):
     def post(self, request):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
-            if User.objects.filter(email=serializer.data['email']):
+            if User.objects.filter(email=serializer.initial_data['email']):
                 data = {
                     'error': 'The email is already used'
                 }
