@@ -6,12 +6,28 @@ from .serializers import UserSerializer, UserProfileSerializer, UserEditSerializ
 from django.contrib.auth import authenticate
 from main.models import UserProfile
 from django.contrib.auth.models import User
+from rest_framework.mixins import CreateModelMixin
 
 
-class UserCreateView(generics.CreateAPIView):
-    serializer_class = UserSerializer
-    authentication_classes = ()
+class UserRegisterView(CreateModelMixin, APIView):
     permission_classes = ()
+    serializer_class = UserSerializer
+
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            if User.objects.filter(email=serializer.data['email']):
+                data = {
+                    'error': 'The email is already used'
+                }
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        else:
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(APIView):
